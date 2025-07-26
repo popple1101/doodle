@@ -19,17 +19,17 @@ const handleLogin = () =>{
     const username = document.getElementById("username").value
     const password = document.getElementById("password").value
 
-    fetch("http://localhost:8080/login",{
+    fetch("http://localhost:8080/api/login",{
         method: "POST", headers: {
             "Content-Type":"application/json"
         },
-        body: JSON.stringify({username, password})
+        body: JSON.stringify({email:username, password})
     }
 )
         .then((res)=>res.json())
         .then((data)=>{
-            if(data.success){
-                alert("로그인 성공")
+            if(data.userId){
+                alert("로그인 성공! 유저 ID : " + data.userId)
             }else{
                 alert("아이디, 비밀번호를 확인하세요")
             }
@@ -42,16 +42,16 @@ const handleLogin = () =>{
         const username = document.getElementById("signupusername").value
         const password = document.getElementById("signuppassword").value
 
-        fetch("http//localHost:8080/signup",{
+        fetch("http://localhost:8080/api/signup",{
             method: "POST",
             headers: {
                 "Content-Type":"application/json"
             },
-            body : JSON.stringify({username, password})
+            body : JSON.stringify({email:username, password})
         })
             .then((res)=>res.json())
             .then((data)=>{
-                if (data.success){
+                if (data.userId){
                     alert("회원가입 완료 되었습니다. 로그인 후 이용해주세요.")
                     signupModal.style.display = "none"
                 }else{
