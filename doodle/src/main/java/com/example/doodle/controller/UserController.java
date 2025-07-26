@@ -2,6 +2,7 @@ package com.example.doodle.controller;
 
 import com.example.doodle.domain.User;
 import com.example.doodle.dto.LoginRequest;
+import com.example.doodle.dto.SignupRequest;
 import com.example.doodle.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,4 +38,25 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+     @PostMapping("/signup")
+    public ResponseEntity<?> signup(@RequestBody SignupRequest request) {
+        Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
+
+        if (existingUser.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 가입된 이메일입니다.");
+        }
+
+        User newUser = new User();
+        newUser.setEmail(request.getEmail());
+        newUser.setPassword(request.getPassword());
+
+        userRepository.save(newUser);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "회원가입 성공");
+        response.put("userId", newUser.getId());
+
+        return ResponseEntity.ok(response);
+    }
 }
+
