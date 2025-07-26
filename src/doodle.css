@@ -1,0 +1,153 @@
+
+.D{
+color: #3048E3;
+font-family: Itim, cursive;
+font-size: 96px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+.o1{
+    color: #FF0004;
+font-family: Itim, cursive;
+font-size: 96px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+.o2{
+    color: #FFEF3F;
+font-family: Itim, cursive;
+font-size: 96px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+.d{
+    color: #3048E3;
+font-family: Itim, cursive;
+font-size: 96px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+.l{
+    color: #00FF09;
+font-family: Itim, cursive;
+font-size: 96px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+.e{
+    color: #FF0004;
+font-family: Itim, cursive;
+font-size: 96px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+#inp{
+    width: 550px;
+    height: 40px;
+    border-radius: 30px;
+    border-width: 1px;
+}
+.icon{
+    margin-bottom: 406px;
+}
+.ul{
+    font-size: large;
+    text-decoration: none;
+    text-align: center;
+    display: flex;
+}
+.li{
+    list-style: none;
+    margin-right: 20px;
+}
+.a{
+    color: black;
+}
+.nav{
+    position: absolute;
+    top: 12px;
+    left: 12px;
+}
+.ul2{
+    font-size: large;
+    text-decoration: none;
+    text-align: center;
+    display: flex;
+}
+.li2{
+    list-style: none;
+    margin-right: 20px;
+}
+.nav2{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+.modal{
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-content{
+    background-color: #b4b4b4;
+    margin: 15% auto;
+    padding: 30px 20px;
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
+}
+.closebtn{
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    cursor: pointer;
+    font-size: 22px;
+}
+.closebtn2{
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    cursor: pointer;
+    font-size: 22px;
+}
+.madaltitle{
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+}
+.logininput{
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+.loginbtn{
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    background-color: #5e5e5d;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.loginbtn:hover{
+    background-color: #313132;
+}
