@@ -17,47 +17,67 @@ export default function Doodle() {
 
     // 로그인: id + password 기반
     const handleLogin = () => {
-      const id = Number(document.getElementById("loginid").value);
+      const email = document.getElementById("loginemail").value;
       const password = document.getElementById("password").value;
 
-      fetch(`${API_BASE}/users?id=${id}&password=${password}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.length > 0) {
-            alert("로그인 성공");
-            loginModal.style.display = "none";
-          } else {
-            alert("아이디 또는 비밀번호를 확인하세요");
+      fetch(`${API_BASE}/api/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            return res.text().then((text) => {
+              throw new Error(text);
+            });
           }
+          return res.json();
         })
-        .catch(err => {
-          console.error("에러 발생: ", err);
+        .then((data) => {
+          alert("로그인 성공! 유저 ID: " + data.userId);
+          loginModal.style.display = "none";
+        })
+        .catch((err) => {
+          alert("로그인 실패: " + err.message);
         });
     };
 
     // 회원가입: id, username, password 모두 입력
     const handleSignup = () => {
-      const id = Number(document.getElementById("signupid").value);
-      const username = document.getElementById("signupusername").value;
+      const email = document.getElementById("signupemail").value;
       const password = document.getElementById("signuppassword").value;
 
-      fetch(`${API_BASE}/users`, {
+      if (!email || !password) {
+        alert("모든 값을 입력해 주세요!");
+        return;
+      }
+
+      fetch(`${API_BASE}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, username, password })
+        body: JSON.stringify({ email, password }),
       })
-        .then(res => res.json())
-        .then(data => {
-          alert("회원가입 완료! 로그인 해주세요.");
+        .then((res) => {
+          if (!res.ok) {
+            return res.text().then((text) => {
+              throw new Error(text);
+            });
+          }
+          return res.json();
+        })
+        .then((data) => {
+          alert("회원가입 완료! 유저 ID: " + data.userId);
           signupModal.style.display = "none";
         })
-        .catch(err => {
-          console.error("회원가입 에러: ", err);
+        .catch((err) => {
+          alert("회원가입 실패: " + err.message);
         });
     };
 
     if (loginLink && loginModal && closebtn) {
-      loginLink.addEventListener("click", e => {
+      loginLink.addEventListener("click", (e) => {
         e.preventDefault();
         loginModal.style.display = "block";
       });
@@ -66,7 +86,7 @@ export default function Doodle() {
         loginModal.style.display = "none";
       });
 
-      window.addEventListener("click", e => {
+      window.addEventListener("click", (e) => {
         if (e.target === loginModal) {
           loginModal.style.display = "none";
         }
@@ -76,7 +96,7 @@ export default function Doodle() {
     }
 
     if (signupLink && signupModal && closebtn2) {
-      signupLink.addEventListener("click", e => {
+      signupLink.addEventListener("click", (e) => {
         e.preventDefault();
         signupModal.style.display = "block";
       });
@@ -85,7 +105,7 @@ export default function Doodle() {
         signupModal.style.display = "none";
       });
 
-      window.addEventListener("click", e => {
+      window.addEventListener("click", (e) => {
         if (e.target === signupModal) {
           signupModal.style.display = "none";
         }
@@ -98,26 +118,56 @@ export default function Doodle() {
   return (
     <div>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-      <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet" />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="true"
+      />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Itim&display=swap"
+        rel="stylesheet"
+      />
 
       {/* 네비게이션 */}
       <div className="nav">
         <ul className="ul">
-          <li className="li"><a href="#" className="a">Doodle 개발자 소개</a></li>
-          <li className="li"><a href="#" className="a">Doodle 후원</a></li>
+          <li className="li">
+            <a href="#" className="a">
+              Doodle 개발자 소개
+            </a>
+          </li>
+          <li className="li">
+            <a href="#" className="a">
+              Doodle 후원
+            </a>
+          </li>
         </ul>
       </div>
       <div className="nav2">
         <ul className="ul2">
-          <li className="li2"><a href="#" className="a" id="loginLink">로그인</a></li>
-          <li className="li2"><a href="#" className="a" id="signupLink">회원가입</a></li>
+          <li className="li2">
+            <a href="#" className="a" id="loginLink">
+              로그인
+            </a>
+          </li>
+          <li className="li2">
+            <a href="#" className="a" id="signupLink">
+              회원가입
+            </a>
+          </li>
         </ul>
       </div>
 
       {/* 로고 */}
       <div className="icon">
-        <p><span className="D">D</span><span className="o1">o</span><span className="o2">o</span><span className="d">d</span><span className="l">l</span><span className="e">e</span></p>
+        <p>
+          <span className="D">D</span>
+          <span className="o1">o</span>
+          <span className="o2">o</span>
+          <span className="d">d</span>
+          <span className="l">l</span>
+          <span className="e">e</span>
+        </p>
         <input type="text" name="입력" id="inp" />
       </div>
 
@@ -126,9 +176,21 @@ export default function Doodle() {
         <div className="modal-content">
           <span className="closebtn">&times;</span>
           <h2 className="madaltitle">로그인</h2>
-          <input type="number" id="loginid" className="logininput" placeholder="아이디 (숫자)" />
-          <input type="password" id="password" className="logininput" placeholder="비밀번호" />
-          <button id="loginbtn" className="loginbtn">로그인</button>
+          <input
+            type="email"
+            id="loginemail"
+            className="logininput"
+            placeholder="아이디 (숫자)"
+          />
+          <input
+            type="password"
+            id="password"
+            className="logininput"
+            placeholder="비밀번호"
+          />
+          <button id="loginbtn" className="loginbtn">
+            로그인
+          </button>
         </div>
       </div>
 
@@ -137,14 +199,23 @@ export default function Doodle() {
         <div className="modal-content">
           <span className="closebtn2">&times;</span>
           <h2 className="madaltitle">회원가입</h2>
-          <input type="number" id="signupid" className="logininput" placeholder="ID (숫자)" />
-          <input type="text" id="signupusername" className="logininput" placeholder="사용자 이름" />
-          <input type="password" id="signuppassword" className="logininput" placeholder="비밀번호" />
-          <button id="signupbtn" className="loginbtn">회원가입</button>
+          <input
+            type="email"
+            id="signupemail"
+            className="logininput"
+            placeholder="이메일"
+          />
+          <input
+            type="password"
+            id="signuppassword"
+            className="logininput"
+            placeholder="비밀번호"
+          />
+          <button id="signupbtn" className="loginbtn">
+            회원가입
+          </button>
         </div>
       </div>
     </div>
   );
 }
-/poppl@LAPTOP-JUNWOO MINGW64 ~/Desktop/Project/doodle (main|MERGING)/ 제발 되게 해주세요
-ppl@LAPTOP-JUNWOO MINGW64 ~/Desktop/Project/doodle (main|MERGING)
