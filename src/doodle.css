@@ -114,6 +114,13 @@ line-height: normal;
     cursor: pointer;
     font-size: 22px;
 }
+.closebtn2{
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    cursor: pointer;
+    font-size: 22px;
+}
 .madaltitle{
     margin-bottom: 20px;
     font-size: 22px;
