@@ -13,4 +13,3 @@ createRoot(document.getElementById('root')).render(
     </BrowserRouter>
   </StrictMode>,
 )
-// ㅓㅇ라너ㅣㅏ러ㅏㄴ머랄ㅇㄹㅇㄴㄹ

@@ -17,4 +17,3 @@ function App() {
 }
 
 export default App
-// 제바아아ㅏ앙ㄹ
