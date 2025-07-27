@@ -32,3 +32,4 @@ export default function ResultPage() {
     </div>
   )
 }
+//제발

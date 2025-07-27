@@ -193,3 +193,4 @@ export default function Doodle() {
     </div>
   );
 }
+// 오늘 일진 안 좋다 시발
