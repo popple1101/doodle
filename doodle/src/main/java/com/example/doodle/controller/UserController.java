@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@CrossOrigin(origins = "http://localhost:3000") // 프론트 연결 대비
+@CrossOrigin(origins = "*") // 프론트 연결 대비
 @RestController // JSON 응답을 주는 컨트롤러
 @RequestMapping("/api")
 
@@ -21,14 +21,14 @@ public class UserController {
 
     @PostMapping("/login") //
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        Optional<User> userOpt = userRepository.findByEmail(request.getEmail());
+        List<User> users = userRepository.findByEmail(request.getEmail());
 
-        if (userOpt.isEmpty()) {
+        if (users.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("이메일 없음");
         }
 
-        User user = userOpt.get();
-        if(!user.getPassword().equals(request.getPassword())) {
+        User user = users.get(0); // 가장 첫번째 사용자 기준
+        if (!user.getPassword().equals(request.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호 틀림");
         }
 
@@ -38,11 +38,12 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
-     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupRequest request) {
-        Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
 
-        if (existingUser.isPresent()) {
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@RequestBody SignupRequest request) {
+        List<User> existingUsers = userRepository.findByEmail(request.getEmail());
+
+        if (!existingUsers.isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 가입된 이메일입니다.");
         }
 
@@ -59,4 +60,3 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 }
-

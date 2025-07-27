@@ -6,6 +6,8 @@ import lombok.Setter;
 
 @Entity // 이 클래스는 DB 테이블
 @Getter @Setter
+// @Table(name = "user")
+@Table(name = "\"USER\"") 
 
 public class User {
 

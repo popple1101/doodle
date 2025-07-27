@@ -4,10 +4,8 @@ public class SignupRequest {
     private String email;
     private String password;
 
-    // 기본 생성자 (필수)
     public SignupRequest() {}
 
-    // Getter/Setter
     public String getEmail() {
         return email;
     }
@@ -24,4 +22,3 @@ public class SignupRequest {
         this.password = password;
     }
 }
-
