@@ -1,7 +1,36 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./doodle.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Doodle() {
+  const REST_API_KEY = "69273c6213f7e4766b730652ca06d5a0";
+  const [result, setResult] = useState([]);
+  const navigate = useNavigate();
+  const [keyword, setkeyword] = useState("");
+
+  const searchPlace = (keyword) => {
+    fetch(`https://dapi.kakao.com/v2/search/web.json?query=${encodeURIComponent(keyword)}`, {
+      method: "GET",
+      headers: {
+        Authorization: `KakaoAK ${REST_API_KEY}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("검색 결과: ", data.documents);
+        setResult(data.documents);
+      })
+      .catch((err) => {
+        console.error("에러 발생: ", err);
+      });
+  };
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter" && keyword.trim()) {
+      navigate(`/result?query=${encodeURIComponent(keyword)}`);
+    }
+  };
+
   useEffect(() => {
     const API_BASE = "http://localhost:8080";
 
@@ -15,8 +44,8 @@ export default function Doodle() {
     const closebtn2 = document.querySelector(".closebtn2");
     const signupbtn = document.getElementById("signupbtn");
 
-    // 로그인: id + password 기반
     const handleLogin = () => {
+<<<<<<< HEAD
       const email = document.getElementById("loginemail").value;
       const password = document.getElementById("password").value;
 
@@ -32,21 +61,45 @@ export default function Doodle() {
             return res.text().then((text) => {
               throw new Error(text);
             });
+=======
+      const id = document.getElementById("loginid").value;
+      const password = document.getElementById("password").value;
+
+      fetch(`${API_BASE}/users?id=${id}&password=${password}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.length > 0) {
+            alert("로그인 성공");
+            loginModal.style.display = "none";
+            document.getElementById("loginid").value = "";
+            document.getElementById("password").value = "";
+          } else {
+            alert("아이디 또는 비밀번호를 확인하세요");
+>>>>>>> origin/frontend
           }
           return res.json();
         })
+<<<<<<< HEAD
         .then((data) => {
           alert("로그인 성공! 유저 ID: " + data.userId);
           loginModal.style.display = "none";
         })
         .catch((err) => {
           alert("로그인 실패: " + err.message);
+=======
+        .catch((err) => {
+          console.error("에러 발생: ", err);
+>>>>>>> origin/frontend
         });
     };
 
-    // 회원가입: id, username, password 모두 입력
     const handleSignup = () => {
+<<<<<<< HEAD
       const email = document.getElementById("signupemail").value;
+=======
+      const id = document.getElementById("signupid").value;
+      const username = document.getElementById("signupusername").value;
+>>>>>>> origin/frontend
       const password = document.getElementById("signuppassword").value;
 
       if (!email || !password) {
@@ -57,6 +110,7 @@ export default function Doodle() {
       fetch(`${API_BASE}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+<<<<<<< HEAD
         body: JSON.stringify({ email, password }),
       })
         .then((res) => {
@@ -69,10 +123,27 @@ export default function Doodle() {
         })
         .then((data) => {
           alert("회원가입 완료! 유저 ID: " + data.userId);
+=======
+        body: JSON.stringify({ id, username, password }),
+      })
+        .then((res) => res.json())
+        .then(() => {
+          alert("회원가입 완료! 로그인 해주세요.");
+>>>>>>> origin/frontend
           signupModal.style.display = "none";
+          document.getElementById("signupid").value = "";
+          document.getElementById("signupusername").value = "";
+          document.getElementById("signuppassword").value = "";
         })
         .catch((err) => {
+<<<<<<< HEAD
           alert("회원가입 실패: " + err.message);
+=======
+          console.error("회원가입 에러: ", err);
+          document.getElementById("signupid").value = "";
+          document.getElementById("signupusername").value = "";
+          document.getElementById("password").value = "";
+>>>>>>> origin/frontend
         });
     };
 
@@ -158,6 +229,7 @@ export default function Doodle() {
         </ul>
       </div>
 
+<<<<<<< HEAD
       {/* 로고 */}
       <div className="icon">
         <p>
@@ -169,6 +241,19 @@ export default function Doodle() {
           <span className="e">e</span>
         </p>
         <input type="text" name="입력" id="inp" />
+=======
+      {/* 중앙 정렬된 로고/입력창 */}
+      <div className="container">
+        <p><span className="D">D</span><span className="o1">o</span><span className="o2">o</span><span className="d">d</span><span className="l">l</span><span className="e">e</span></p>
+        <input
+          type="text"
+          name="입력"
+          id="inp"
+          onChange={(e) => setkeyword(e.target.value)}
+          onKeyDown={handleSearch}
+          value={keyword}
+        />
+>>>>>>> origin/frontend
       </div>
 
       {/* 로그인 모달 */}
@@ -176,6 +261,7 @@ export default function Doodle() {
         <div className="modal-content">
           <span className="closebtn">&times;</span>
           <h2 className="madaltitle">로그인</h2>
+<<<<<<< HEAD
           <input
             type="email"
             id="loginemail"
@@ -191,6 +277,11 @@ export default function Doodle() {
           <button id="loginbtn" className="loginbtn">
             로그인
           </button>
+=======
+          <input type="text" id="loginid" className="logininput" placeholder="아이디" />
+          <input type="password" id="password" className="logininput" placeholder="비밀번호" />
+          <button id="loginbtn" className="loginbtn">로그인</button>
+>>>>>>> origin/frontend
         </div>
       </div>
 
@@ -199,6 +290,7 @@ export default function Doodle() {
         <div className="modal-content">
           <span className="closebtn2">&times;</span>
           <h2 className="madaltitle">회원가입</h2>
+<<<<<<< HEAD
           <input
             type="email"
             id="signupemail"
@@ -214,6 +306,12 @@ export default function Doodle() {
           <button id="signupbtn" className="loginbtn">
             회원가입
           </button>
+=======
+          <input type="text" id="signupid" className="logininput" placeholder="ID" />
+          <input type="text" id="signupusername" className="logininput" placeholder="사용자 이름" />
+          <input type="password" id="signuppassword" className="logininput" placeholder="비밀번호" />
+          <button id="signupbtn" className="loginbtn">회원가입</button>
+>>>>>>> origin/frontend
         </div>
       </div>
     </div>
