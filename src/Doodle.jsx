@@ -1,7 +1,36 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./doodle.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Doodle() {
+  const REST_API_KEY = "69273c6213f7e4766b730652ca06d5a0";
+  const [result, setResult] = useState([]);
+  const navigate = useNavigate();
+  const [keyword, setkeyword] = useState("");
+
+  const searchPlace = (keyword) => {
+    fetch(`https://dapi.kakao.com/v2/search/web.json?query=${encodeURIComponent(keyword)}`, {
+      method: "GET",
+      headers: {
+        Authorization: `KakaoAK ${REST_API_KEY}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("검색 결과: ", data.documents);
+        setResult(data.documents);
+      })
+      .catch((err) => {
+        console.error("에러 발생: ", err);
+      });
+  };
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter" && keyword.trim()) {
+      navigate(`/result?query=${encodeURIComponent(keyword)}`);
+    }
+  };
+
   useEffect(() => {
     const API_BASE = "http://localhost:8080";
 
@@ -15,29 +44,29 @@ export default function Doodle() {
     const closebtn2 = document.querySelector(".closebtn2");
     const signupbtn = document.getElementById("signupbtn");
 
-    // 로그인: id + password 기반
     const handleLogin = () => {
-      const id = Number(document.getElementById("loginid").value);
+      const id = document.getElementById("loginid").value;
       const password = document.getElementById("password").value;
 
       fetch(`${API_BASE}/users?id=${id}&password=${password}`)
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           if (data.length > 0) {
             alert("로그인 성공");
             loginModal.style.display = "none";
+            document.getElementById("loginid").value = "";
+            document.getElementById("password").value = "";
           } else {
             alert("아이디 또는 비밀번호를 확인하세요");
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.error("에러 발생: ", err);
         });
     };
 
-    // 회원가입: id, username, password 모두 입력
     const handleSignup = () => {
-      const id = Number(document.getElementById("signupid").value);
+      const id = document.getElementById("signupid").value;
       const username = document.getElementById("signupusername").value;
       const password = document.getElementById("signuppassword").value;
 
@@ -49,20 +78,26 @@ export default function Doodle() {
       fetch(`${API_BASE}/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, username, password })
+        body: JSON.stringify({ id, username, password }),
       })
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then(() => {
           alert("회원가입 완료! 로그인 해주세요.");
           signupModal.style.display = "none";
+          document.getElementById("signupid").value = "";
+          document.getElementById("signupusername").value = "";
+          document.getElementById("signuppassword").value = "";
         })
-        .catch(err => {
+        .catch((err) => {
           console.error("회원가입 에러: ", err);
+          document.getElementById("signupid").value = "";
+          document.getElementById("signupusername").value = "";
+          document.getElementById("password").value = "";
         });
     };
 
     if (loginLink && loginModal && closebtn) {
-      loginLink.addEventListener("click", e => {
+      loginLink.addEventListener("click", (e) => {
         e.preventDefault();
         loginModal.style.display = "block";
       });
@@ -71,7 +106,7 @@ export default function Doodle() {
         loginModal.style.display = "none";
       });
 
-      window.addEventListener("click", e => {
+      window.addEventListener("click", (e) => {
         if (e.target === loginModal) {
           loginModal.style.display = "none";
         }
@@ -81,7 +116,7 @@ export default function Doodle() {
     }
 
     if (signupLink && signupModal && closebtn2) {
-      signupLink.addEventListener("click", e => {
+      signupLink.addEventListener("click", (e) => {
         e.preventDefault();
         signupModal.style.display = "block";
       });
@@ -90,7 +125,7 @@ export default function Doodle() {
         signupModal.style.display = "none";
       });
 
-      window.addEventListener("click", e => {
+      window.addEventListener("click", (e) => {
         if (e.target === signupModal) {
           signupModal.style.display = "none";
         }
@@ -120,10 +155,17 @@ export default function Doodle() {
         </ul>
       </div>
 
-      {/* 로고 */}
-      <div className="icon">
+      {/* 중앙 정렬된 로고/입력창 */}
+      <div className="container">
         <p><span className="D">D</span><span className="o1">o</span><span className="o2">o</span><span className="d">d</span><span className="l">l</span><span className="e">e</span></p>
-        <input type="text" name="입력" id="inp" />
+        <input
+          type="text"
+          name="입력"
+          id="inp"
+          onChange={(e) => setkeyword(e.target.value)}
+          onKeyDown={handleSearch}
+          value={keyword}
+        />
       </div>
 
       {/* 로그인 모달 */}
@@ -131,7 +173,7 @@ export default function Doodle() {
         <div className="modal-content">
           <span className="closebtn">&times;</span>
           <h2 className="madaltitle">로그인</h2>
-          <input type="number" id="loginid" className="logininput" placeholder="아이디 (숫자)" />
+          <input type="text" id="loginid" className="logininput" placeholder="아이디" />
           <input type="password" id="password" className="logininput" placeholder="비밀번호" />
           <button id="loginbtn" className="loginbtn">로그인</button>
         </div>
@@ -142,7 +184,7 @@ export default function Doodle() {
         <div className="modal-content">
           <span className="closebtn2">&times;</span>
           <h2 className="madaltitle">회원가입</h2>
-          <input type="number" id="signupid" className="logininput" placeholder="ID (숫자)" />
+          <input type="text" id="signupid" className="logininput" placeholder="ID" />
           <input type="text" id="signupusername" className="logininput" placeholder="사용자 이름" />
           <input type="password" id="signuppassword" className="logininput" placeholder="비밀번호" />
           <button id="signupbtn" className="loginbtn">회원가입</button>
@@ -151,4 +193,3 @@ export default function Doodle() {
     </div>
   );
 }
-// 제발 되게 해주세요
